@@ -78,6 +78,79 @@ npm run test:run     # Run tests once (CI mode)
 - **Persistent**: Theme preference saved to localStorage
 - **Smooth Transitions**: 0.2s transition between light/dark modes
 
+### Composables Pattern
+
+**Composables** are reusable composition functions that encapsulate stateful logic.
+
+**Sample available composables:**
+
+1. **`useTheme()`** - Theme management
+
+   - Returns: `{ theme, toggleTheme }`
+   - Features: Dark/light mode toggle, localStorage persistence
+   - Implementation: Reactive ref with watchEffect for DOM updates
+   - Location: `src/composables/useTheme.ts`
+
+2. **`useLoading()`** - Loading state management
+   - Returns: `{ isLoading, startLoading, stopLoading, withLoading }`
+   - Features: Track multiple concurrent operations, automatic API tracking
+   - Implementation: Pinia store wrapper with helper functions
+   - Location: `src/composables/useLoading.ts`
+   - Example:
+     ```tsx
+     const { isLoading, withLoading } = useLoading();
+     await withLoading("save-user", async () => await saveUser());
+     ```
+
+**Composable Benefits:**
+
+- Code reuse across components
+- Encapsulated logic and state
+- Testable in isolation
+- Better than mixins (no namespace collisions)
+
+### Plugins System
+
+**Plugins** configure third-party libraries and provide global functionality.
+
+**Available plugins:**
+
+1. **`fetch.ts`** - HTTP client configuration
+
+   - Library: ofetch
+   - Features:
+     - Auto-attaches auth tokens via `onRequest` interceptor
+     - Centralizes error handling via `onResponseError`
+     - Auto-logout on 401 responses
+     - Automatic loading state tracking
+   - Usage: `import { api } from '@/plugins/fetch'`
+   - Location: `src/plugins/fetch.ts`
+   - Example:
+     ```tsx
+     const data = await api<User>("/users/me"); // TypeScript generic
+     ```
+
+2. **`i18n.ts`** - Internationalization setup
+   - Library: vue-i18n
+   - Features: Multi-language support (EN/DE), reactive locale switching
+   - Messages: Defined inline in plugin file
+   - Usage: `const { t, locale } = useI18n()`
+   - Location: `src/plugins/i18n.ts`
+   - Example:
+     ```tsx
+     {
+       t("nav.home");
+     } // Translates to "Home" or "Startseite"
+     locale.value = "de"; // Switch language
+     ```
+
+**Plugin Architecture:**
+
+- Configured once in `main.ts`
+- Available app-wide via composition API
+- No prop drilling required
+- Centralized configuration
+
 ### Type Safety
 
 - **Strict TypeScript**: All event handlers properly typed (no `any`)
@@ -89,7 +162,7 @@ npm run test:run     # Run tests once (CI mode)
 - **Vitest**: Fast unit test framework with HMR
 - **Happy DOM**: Lightweight DOM implementation for tests
 - **Component Tests**: Tests for ErrorBanner with Pinia integration
-- **Composable Tests**: Tests for useTheme with localStorage mocking
+- **Composable Tests**: Tests for useTheme/useLoading with localStorage mocking
 - **Store Tests**: Tests for error store CRUD operations
 
 ## Project Structure
@@ -165,6 +238,7 @@ If not set, defaults to `/api` for development.
 ### Styling Architecture
 
 This project uses a **hybrid styling approach**:
+
 - **Tailwind CSS** for utility-first styling (primary)
 - **CSS Modules** for component-specific animations and complex styles
 - **CSS Custom Properties** for theming
