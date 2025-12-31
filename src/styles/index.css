@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --primary: #3b82f6;
+  --secondary: #6b7280;
+}
+
+:root[data-theme="dark"] {
+  --bg: #1a1a1a;
+  --fg: #ffffff;
+  --primary: #3b82f6;
+  --secondary: #9ca3af;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  transition: background-color 0.2s, color 0.2s;
+}
