@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
+import { useAuthStore } from '../stores/auth' // Note: Guards must use store directly (not in component context)
 
 export const router = createRouter({
   history: createWebHistory(),

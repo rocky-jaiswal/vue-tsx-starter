@@ -2,14 +2,14 @@ import { defineComponent } from "vue";
 import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useTheme } from "../composables/useTheme";
-import { useAuthStore } from "../stores/auth";
+import { useAuth } from "../composables/useAuth";
 
 export const Nav = defineComponent({
   name: "Nav",
   setup() {
     const { t, locale } = useI18n();
     const { theme, toggleTheme } = useTheme();
-    const auth = useAuthStore();
+    const { isAuthenticated, logout } = useAuth();
 
     return () => (
       <header class="flex items-center justify-between gap-4 py-4">
@@ -36,8 +36,8 @@ export const Nav = defineComponent({
           <button class="px-3 py-1 rounded-lg border" onClick={toggleTheme}>
             {t("actions.toggleTheme")}: {theme.value}
           </button>
-          {auth.isAuthenticated ? (
-            <button class="px-3 py-1 rounded-lg border" onClick={auth.logout}>
+          {isAuthenticated.value ? (
+            <button class="px-3 py-1 rounded-lg border" onClick={logout}>
               {t("actions.logout")}
             </button>
           ) : (

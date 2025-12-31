@@ -1,5 +1,5 @@
 import { defineComponent, ref } from 'vue'
-import { useAuthStore } from '../stores/auth'
+import { useAuth } from '../composables/useAuth'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { useErrorStore } from '../stores/errors'
@@ -8,7 +8,7 @@ export default defineComponent({
   name: 'Login',
   setup() {
     const { t } = useI18n()
-    const auth = useAuthStore()
+    const { login } = useAuth()
     const route = useRoute()
     const router = useRouter()
     const errors = useErrorStore()
@@ -19,7 +19,7 @@ export default defineComponent({
     const submit = async (e: Event) => {
       e.preventDefault()
       try {
-        await auth.login(email.value, password.value)
+        await login(email.value, password.value)
         // Validate redirect to prevent open redirect vulnerability
         const redirect = route.query.redirect as string
         const safeRedirect = redirect && redirect.startsWith('/') ? redirect : '/dashboard'

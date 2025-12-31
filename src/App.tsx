@@ -2,7 +2,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import { RouterView } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useTheme } from "./composables/useTheme";
-import { useAuthStore } from "./stores/auth";
+import { useAuth } from "./composables/useAuth";
 import { useLoading } from "./composables/useLoading";
 import { ErrorBanner } from "./components/ErrorBanner";
 import { Nav } from "./components/Nav";
@@ -13,12 +13,12 @@ export default defineComponent({
     const { t } = useI18n();
     const { theme } = useTheme();
     const { isLoading } = useLoading();
-    const auth = useAuthStore();
+    const { hydrateFromStorage } = useAuth();
     const ready = ref(false);
 
     onMounted(async () => {
       // try to refresh session on load
-      await auth.hydrateFromStorage();
+      await hydrateFromStorage();
       ready.value = true;
     });
 

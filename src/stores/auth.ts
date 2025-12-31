@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from '../plugins/fetch'
 
-type User = {
+export type User = {
   id: string
   email: string
 }

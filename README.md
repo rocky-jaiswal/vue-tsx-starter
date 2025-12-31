@@ -82,16 +82,33 @@ npm run test:run     # Run tests once (CI mode)
 
 **Composables** are reusable composition functions that encapsulate stateful logic.
 
-**Sample available composables:**
+**Design Pattern:**
+This project wraps **all Pinia stores** in composables to provide an abstraction layer between components and state management.
 
-1. **`useTheme()`** - Theme management
+**Sample composables:**
+
+1. **`useAuth()`** - Authentication state management
+
+   - Returns: `{ user, token, isAuthenticated, login, logout, clear }`
+   - Features: Wraps auth store, provides reactive computed properties
+   - Implementation: Pinia store wrapper exposing only necessary APIs
+   - Location: `src/composables/useAuth.ts`
+   - Example:
+     ```tsx
+     const { isAuthenticated, login, logout } = useAuth();
+     if (isAuthenticated.value) {
+       await logout();
+     }
+     ```
+
+2. **`useTheme()`** - Theme management
 
    - Returns: `{ theme, toggleTheme }`
    - Features: Dark/light mode toggle, localStorage persistence
    - Implementation: Reactive ref with watchEffect for DOM updates
    - Location: `src/composables/useTheme.ts`
 
-2. **`useLoading()`** - Loading state management
+3. **`useLoading()`** - Loading state management
    - Returns: `{ isLoading, startLoading, stopLoading, withLoading }`
    - Features: Track multiple concurrent operations, automatic API tracking
    - Implementation: Pinia store wrapper with helper functions
@@ -104,10 +121,13 @@ npm run test:run     # Run tests once (CI mode)
 
 **Composable Benefits:**
 
-- Code reuse across components
-- Encapsulated logic and state
-- Testable in isolation
-- Better than mixins (no namespace collisions)
+- **Abstraction** - Components don't directly depend on Pinia
+- **Flexibility** - Easy to swap state management implementation
+- **Consistency** - All state access follows the same pattern
+- **Testability** - Mock composables instead of stores
+- **Encapsulation** - Expose only necessary APIs, hide internal details
+
+**Note:** Router guards and API interceptors still use stores directly since they run outside component context.
 
 ### Plugins System
 
