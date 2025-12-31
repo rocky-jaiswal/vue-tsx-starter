@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-type AppError = {
+export type AppError = {
   id: number
   message: string
   status?: number

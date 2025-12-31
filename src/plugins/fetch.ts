@@ -1,5 +1,5 @@
 import { ofetch } from "ofetch";
-import { useAuthStore } from "../stores/auth"; // Note: Interceptors must use store directly (not in component context)
+import { useAuthStore } from "../stores/auth"; // Note: Interceptors must use stores directly (not in component context)
 import { useErrorStore } from "../stores/errors";
 import { useLoadingStore } from "../stores/loading";
 

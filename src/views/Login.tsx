@@ -2,7 +2,7 @@ import { defineComponent, ref } from 'vue'
 import { useAuth } from '../composables/useAuth'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-import { useErrorStore } from '../stores/errors'
+import { useError } from '../composables/useError'
 
 export default defineComponent({
   name: 'Login',
@@ -11,7 +11,7 @@ export default defineComponent({
     const { login } = useAuth()
     const route = useRoute()
     const router = useRouter()
-    const errors = useErrorStore()
+    const { push } = useError()
 
     const email = ref('')
     const password = ref('')
@@ -25,7 +25,7 @@ export default defineComponent({
         const safeRedirect = redirect && redirect.startsWith('/') ? redirect : '/dashboard'
         router.replace(safeRedirect)
       } catch (_e) {
-        errors.push(t('auth.loginFailed'))
+        push(t('auth.loginFailed'))
       }
     }
 

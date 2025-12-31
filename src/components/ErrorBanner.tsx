@@ -1,21 +1,21 @@
 import { defineComponent } from 'vue'
-import { useErrorStore } from '../stores/errors'
+import { useError } from '../composables/useError'
 
 export const ErrorBanner = defineComponent({
   name: 'ErrorBanner',
   setup() {
-    const errors = useErrorStore()
+    const { errors, remove } = useError()
     return () => (
-      errors.list.length ? (
+      errors.value.length ? (
         <div class="mb-4 rounded-xl border p-3 bg-red-50 dark:bg-red-900/20">
           <ul class="space-y-2">
-            {errors.list.map(err => (
+            {errors.value.map(err => (
               <li class="flex items-start justify-between gap-4" key={err.id}>
                 <div>
                   <div class="font-medium">Error {err.status ? `(${err.status})` : ''}</div>
                   <div>{err.message}</div>
                 </div>
-                <button class="text-sm underline" onClick={() => errors.remove(err.id)}>dismiss</button>
+                <button class="text-sm underline" onClick={() => remove(err.id)}>dismiss</button>
               </li>
             ))}
           </ul>
