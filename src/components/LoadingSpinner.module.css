@@ -1,0 +1,32 @@
+/* Loading Spinner Component Styles */
+
+.spinner {
+  border: 3px solid var(--secondary);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.fullscreenOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(from var(--bg) r g b / 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+}
+
+.inlineContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -162,6 +162,15 @@ If not set, defaults to `/api` for development.
 - Minimal initial bundle size
 - Optimized Vite build configuration
 
+### Styling Architecture
+
+This project uses a **hybrid styling approach**:
+- **Tailwind CSS** for utility-first styling (primary)
+- **CSS Modules** for component-specific animations and complex styles
+- **CSS Custom Properties** for theming
+
+See [STYLING-GUIDE.md](STYLING-GUIDE.md) for detailed patterns and best practices.
+
 ## Testing Strategy
 
 Run tests with:
@@ -217,6 +226,25 @@ Use in components via Tailwind config or direct CSS:
 ### Adding i18n Translations
 
 Edit `src/plugins/i18n.ts` and add new keys to the messages object.
+
+### Loading component / composable
+
+**Usage:**
+
+```tsx
+// Automatic - API requests tracked automatically!
+await api('/users')  // Loading bar appears automatically
+
+// Manual control
+const { isLoading, startLoading, stopLoading, withLoading } = useLoading()
+startLoading('custom-op')
+await doSomething()
+stopLoading('custom-op')
+
+// Component
+<LoadingSpinner size="lg" />
+<LoadingSpinner fullScreen />
+```
 
 ## License
 
